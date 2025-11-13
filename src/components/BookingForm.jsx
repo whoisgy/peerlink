@@ -1,8 +1,9 @@
-import { useState } from "react";
+// src/components/BookingForm.jsx
+import { useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { CalendarCheck, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 
-export default function BookingForm() {
+export default function BookingForm({ selectedTutor }) {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -14,6 +15,19 @@ export default function BookingForm() {
   });
 
   const [status, setStatus] = useState("idle"); // idle | loading | success | error
+
+  // When user selects a tutor, pre-fill subject + notes (but don't overwrite user edits)
+  useEffect(() => {
+    if (selectedTutor) {
+      setForm((prev) => ({
+        ...prev,
+        subject: prev.subject || selectedTutor.subject,
+        notes:
+          prev.notes ||
+          `I’d like to book a session with ${selectedTutor.name} for ${selectedTutor.subject}.`,
+      }));
+    }
+  }, [selectedTutor]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -29,7 +43,6 @@ export default function BookingForm() {
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         {
-          // 🔑 these keys MUST match your {{variables}} in EmailJS
           student_name: form.name,
           student_email: form.email,
           subject: form.subject,
@@ -37,6 +50,7 @@ export default function BookingForm() {
           time: form.time,
           duration: form.duration + " minutes",
           notes: form.notes || "No additional notes provided.",
+          tutor_name: selectedTutor ? selectedTutor.name : "Any available tutor",
         },
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
@@ -61,7 +75,9 @@ export default function BookingForm() {
     <section id="booking" className="max-w-3xl mx-auto px-4 py-16">
       <div className="flex items-center gap-2 mb-4">
         <CalendarCheck className="w-6 h-6 text-indigo-600" />
-        <h2 className="text-3xl font-bold">Book a session</h2>
+        <h2 className="text-3xl font-bold">
+          {selectedTutor ? `Book with ${selectedTutor.name}` : "Book a session"}
+        </h2>
       </div>
       <p className="text-gray-600 mb-6">
         Fill in the details below. You’ll receive an email with your booking
@@ -74,9 +90,7 @@ export default function BookingForm() {
       >
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">
-              Your name
-            </label>
+            <label className="block text-sm font-medium mb-1">Your name</label>
             <input
               name="name"
               value={form.name}
@@ -88,9 +102,7 @@ export default function BookingForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">
-              Your email
-            </label>
+            <label className="block text-sm font-medium mb-1">Your email</label>
             <input
               type="email"
               name="email"
@@ -173,7 +185,9 @@ export default function BookingForm() {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-white font-medium hover:bg-indigo-700 disabled:opacity-60"
+          className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-white font-medium
+                     hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
+                     transition cursor-pointer disabled:opacity-60"
         >
           {status === "loading" && (
             <Loader2 className="w-4 h-4 mr-2 animate-spin" />

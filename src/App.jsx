@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -11,8 +12,8 @@ import {
   Shield,
 } from "lucide-react";
 import BookingForm from "./components/BookingForm";
+import TutorSearch from "./components/TutorSearch";
 
-// Simple Card components so we don't rely on shadcn/ui imports
 const Card = ({ children, className = "" }) => (
   <div className={`rounded-2xl shadow-lg bg-white/90 border border-gray-100 ${className}`}>
     {children}
@@ -25,6 +26,7 @@ const CardContent = ({ children, className = "" }) => (
 
 export default function App() {
   const [email, setEmail] = useState("");
+  const [selectedTutor, setSelectedTutor] = useState(null);
 
   const features = [
     {
@@ -75,6 +77,16 @@ export default function App() {
     },
   ];
 
+  const scrollToBooking = () => {
+    const el = document.getElementById("booking");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSelectTutor = (tutor) => {
+    setSelectedTutor(tutor);
+    scrollToBooking();
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-white text-gray-900">
       {/* Nav */}
@@ -91,6 +103,9 @@ export default function App() {
             <a href="#how" className="hover:text-indigo-600">
               How it works
             </a>
+            <a href="#tutors" className="hover:text-indigo-600">
+              Tutors
+            </a>
             <a href="#booking" className="hover:text-indigo-600">
               Book
             </a>
@@ -101,12 +116,17 @@ export default function App() {
               FAQ
             </a>
           </nav>
-          <a
-            href="#booking"
-            className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium shadow hover:bg-indigo-700"
+          <button
+            onClick={() => {
+              setSelectedTutor(null);
+              scrollToBooking();
+            }}
+            className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium shadow
+                       hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
+                       transition cursor-pointer"
           >
             Book a session
-          </a>
+          </button>
         </div>
       </header>
 
@@ -142,7 +162,11 @@ export default function App() {
               placeholder="Your university email"
               className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            <button className="px-5 py-3 rounded-xl bg-indigo-600 text-white font-medium shadow hover:bg-indigo-700">
+            <button
+              className="px-5 py-3 rounded-xl bg-indigo-600 text-white font-medium shadow
+                         hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
+                         transition cursor-pointer"
+            >
               Join waitlist
             </button>
           </form>
@@ -179,7 +203,11 @@ export default function App() {
                     meta: "Top 5% in DSA • 4.9",
                     stars: 5,
                   },
-                  { name: "Ken, Math Year 2", meta: "Probability wiz • 4.8", stars: 5 },
+                  {
+                    name: "Ken, Math Year 2",
+                    meta: "Probability wiz • 4.8",
+                    stars: 5,
+                  },
                 ].map((t, i) => (
                   <div
                     key={i}
@@ -206,10 +234,12 @@ export default function App() {
                 ))}
               </div>
               <button
-                className="mt-6 w-full py-3 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700"
+                className="mt-6 w-full py-3 rounded-xl bg-indigo-600 text-white font-medium
+                           hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
+                           transition cursor-pointer"
                 onClick={() => {
-                  const el = document.getElementById("booking");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                  setSelectedTutor(null);
+                  scrollToBooking();
                 }}
               >
                 Book 30-min Session
@@ -221,7 +251,9 @@ export default function App() {
 
       {/* Features */}
       <section id="features" className="max-w-6xl mx-auto px-4 py-10">
-        <h2 className="text-3xl md:text-4xl font-bold">Why students love PeerLink</h2>
+        <h2 className="text-3xl md:text-4xl font-bold">
+          Why students love PeerLink
+        </h2>
         <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((f, idx) => (
             <Card key={idx}>
@@ -266,8 +298,11 @@ export default function App() {
         </div>
       </section>
 
-      {/* Booking section (form with email) */}
-      <BookingForm />
+      {/* Tutors page/section */}
+      <TutorSearch onSelectTutor={handleSelectTutor} />
+
+      {/* Booking form */}
+      <BookingForm selectedTutor={selectedTutor} />
 
       {/* Pricing */}
       <section id="pricing" className="max-w-6xl mx-auto px-4 py-16">
@@ -299,7 +334,11 @@ export default function App() {
                     </li>
                   ))}
                 </ul>
-                <button className="mt-6 w-full py-3 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700">
+                <button
+                  className="mt-6 w-full py-3 rounded-xl bg-indigo-600 text-white font-medium
+                             hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
+                             transition cursor-pointer"
+                >
                   {t.cta}
                 </button>
               </CardContent>
