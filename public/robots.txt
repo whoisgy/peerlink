@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://peerlink.vercel.app/sitemap.xml
