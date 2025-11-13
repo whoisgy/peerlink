@@ -1,0 +1,74 @@
+<!-- index.html (ready for SEO, social sharing, and Vercel hosting) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PeerLink – Peer-to-peer micro-tutoring for students</title>
+
+  <!-- Basic SEO -->
+  <meta name="title" content="PeerLink – Peer-to-peer micro-tutoring for students">
+  <meta name="description" content="Get unstuck fast. Book 15–60 minute micro-sessions with top peers for your exact topic. Teach to earn credits, learn when you need.">
+  <meta name="keywords" content="PeerLink, university tutoring, micro tutoring, student tutoring, study help">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://peerlink.vercel.app/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://peerlink.vercel.app/">
+  <meta property="og:title" content="PeerLink – Peer-to-peer micro-tutoring">
+  <meta property="og:description" content="On-demand, short sessions with verified peers.">
+  <meta property="og:image" content="https://peerlink.vercel.app/og-cover.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PeerLink – Peer-to-peer micro-tutoring">
+  <meta name="twitter:description" content="On-demand, short sessions with verified peers.">
+  <meta name="twitter:image" content="https://peerlink.vercel.app/og-cover.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico">
+
+  <!-- Fonts optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google Analytics (optional) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXX');
+  </script>
+
+  <script type="module" crossorigin src="/src/main.jsx"></script>
+  <link rel="stylesheet" href="/src/index.css">
+</head>
+<body class="font-[Inter] bg-gradient-to-b from-indigo-50 to-white text-gray-900">
+  <div id="root"></div>
+</body>
+</html>
+
+<!-- public/robots.txt -->
+User-agent: *
+Allow: /
+
+Sitemap: https://peerlink.vercel.app/sitemap.xml
+
+<!-- public/sitemap.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://peerlink.vercel.app/</loc>
+    <lastmod>2025-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
+
+<!-- vercel.json (for client-side routing) -->
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+}
