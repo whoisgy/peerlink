@@ -1,9 +1,8 @@
-// src/components/BookingForm.jsx
 import { useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { CalendarCheck, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
 
-export default function BookingForm({ selectedTutor }) {
+export default function BookingForm({ selectedTutor, onSuccess }) {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -14,27 +13,22 @@ export default function BookingForm({ selectedTutor }) {
     notes: "",
   });
 
-  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [status, setStatus] = useState("idle");
 
-  // When user selects a tutor, pre-fill subject + notes (but don't overwrite user edits)
   useEffect(() => {
     if (selectedTutor) {
       setForm((prev) => ({
         ...prev,
-        subject: prev.subject || selectedTutor.subject,
-        notes:
-          prev.notes ||
-          `I’d like to book a session with ${selectedTutor.name} for ${selectedTutor.subject}.`,
+        subject: selectedTutor.subject,
       }));
     }
   }, [selectedTutor]);
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  function change(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  async function handleSubmit(e) {
+  async function submit(e) {
     e.preventDefault();
     setStatus("loading");
 
@@ -49,166 +43,145 @@ export default function BookingForm({ selectedTutor }) {
           date: form.date,
           time: form.time,
           duration: form.duration + " minutes",
-          notes: form.notes || "No additional notes provided.",
-          tutor_name: selectedTutor ? selectedTutor.name : "Any available tutor",
+          tutor: selectedTutor?.name || "N/A",
+          notes: form.notes || "No notes provided.",
         },
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
       setStatus("success");
+      onSuccess?.(); // close modal
+
       setForm({
         name: "",
         email: "",
-        subject: "",
+        subject: selectedTutor?.subject || "",
         date: "",
         time: "",
         duration: "30",
         notes: "",
       });
     } catch (err) {
-      console.error("Booking email error:", err);
+      console.error(err);
       setStatus("error");
     }
   }
 
   return (
-    <section id="booking" className="max-w-3xl mx-auto px-4 py-16">
-      <div className="flex items-center gap-2 mb-4">
-        <CalendarCheck className="w-6 h-6 text-indigo-600" />
-        <h2 className="text-3xl font-bold">
-          {selectedTutor ? `Book with ${selectedTutor.name}` : "Book a session"}
-        </h2>
-      </div>
-      <p className="text-gray-600 mb-6">
-        Fill in the details below. You’ll receive an email with your booking
-        summary once it’s confirmed.
-      </p>
+    <div>
+      <h2 className="text-xl font-bold mb-3">
+        Book session {selectedTutor && `with ${selectedTutor.name}`}
+      </h2>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4 rounded-2xl border bg-white/90 p-6 shadow-lg"
-      >
-        <div className="grid md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Your name</label>
-            <input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              className="w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Jane Student"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Your email</label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="you@university.edu"
-            />
-          </div>
-        </div>
-
+      <form className="space-y-4" onSubmit={submit}>
         <div>
-          <label className="block text-sm font-medium mb-1">
-            Topic / Subject
-          </label>
+          <label className="text-sm font-medium">Your Name</label>
           <input
-            name="subject"
-            value={form.subject}
-            onChange={handleChange}
             required
-            className="w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="AVL Trees in DSA"
+            name="name"
+            value={form.name}
+            onChange={change}
+            className="w-full mt-1 px-3 py-2 border rounded-xl"
           />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4">
+        <div>
+          <label className="text-sm font-medium">Your Email</label>
+          <input
+            required
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={change}
+            className="w-full mt-1 px-3 py-2 border rounded-xl"
+          />
+        </div>
+
+        <div>
+          <label className="text-sm font-medium">Subject</label>
+          <input
+            required
+            name="subject"
+            value={form.subject}
+            onChange={change}
+            className="w-full mt-1 px-3 py-2 border rounded-xl"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Date</label>
+            <label className="text-sm font-medium">Date</label>
             <input
+              required
               type="date"
               name="date"
               value={form.date}
-              onChange={handleChange}
-              required
-              className="w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              onChange={change}
+              className="w-full mt-1 px-3 py-2 border rounded-xl"
             />
           </div>
+
           <div>
-            <label className="block text-sm font-medium mb-1">Time</label>
+            <label className="text-sm font-medium">Time</label>
             <input
+              required
               type="time"
               name="time"
               value={form.time}
-              onChange={handleChange}
-              required
-              className="w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              onChange={change}
+              className="w-full mt-1 px-3 py-2 border rounded-xl"
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Duration (minutes)
-            </label>
-            <select
-              name="duration"
-              value={form.duration}
-              onChange={handleChange}
-              className="w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              <option value="15">15</option>
-              <option value="30">30</option>
-              <option value="60">60</option>
-            </select>
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">
-            Notes for your tutor (optional)
-          </label>
+          <label className="text-sm font-medium">Duration</label>
+          <select
+            name="duration"
+            value={form.duration}
+            onChange={change}
+            className="w-full mt-1 px-3 py-2 border rounded-xl"
+          >
+            <option value="15">15 min</option>
+            <option value="30">30 min</option>
+            <option value="60">60 min</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="text-sm font-medium">Notes (optional)</label>
           <textarea
             name="notes"
             value={form.notes}
-            onChange={handleChange}
-            className="w-full rounded-xl border px-3 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="E.g. I understand basic trees but struggle with rotations..."
+            onChange={change}
+            className="w-full mt-1 px-3 py-2 border rounded-xl h-20 resize-none"
+            placeholder="Any specific topics?"
           />
         </div>
 
         <button
           type="submit"
           disabled={status === "loading"}
-          className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-white font-medium
+          className="w-full bg-indigo-600 text-white py-3 rounded-xl font-medium
                      hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
-                     transition cursor-pointer disabled:opacity-60"
+                     transition cursor-pointer disabled:opacity-50 flex items-center justify-center"
         >
-          {status === "loading" && (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          )}
-          {status === "loading" ? "Booking..." : "Book session & send email"}
+          {status === "loading" && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+          {status === "loading" ? "Booking..." : "Confirm Booking"}
         </button>
 
         {status === "success" && (
-          <p className="mt-2 flex items-center text-sm text-emerald-600">
-            <CheckCircle2 className="w-4 h-4 mr-1" />
-            Booking submitted! Check your email for the details.
+          <p className="flex items-center text-green-600 text-sm mt-2">
+            <CheckCircle className="w-4 h-4 mr-1" /> Booking successful!
           </p>
         )}
 
         {status === "error" && (
-          <p className="mt-2 flex items-center text-sm text-red-600">
-            <AlertCircle className="w-4 h-4 mr-1" />
-            Something went wrong sending the email. Please try again.
+          <p className="flex items-center text-red-600 text-sm mt-2">
+            <AlertCircle className="w-4 h-4 mr-1" /> Something went wrong.
           </p>
         )}
       </form>
-    </section>
+    </div>
   );
 }
