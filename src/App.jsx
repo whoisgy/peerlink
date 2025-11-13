@@ -1,12 +1,24 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, Clock, Star, CalendarCheck, Users, MessageSquare, Zap, Shield } from "lucide-react";
+import {
+  CheckCircle,
+  Clock,
+  Star,
+  CalendarCheck,
+  Users,
+  MessageSquare,
+  Zap,
+  Shield,
+} from "lucide-react";
+import BookingForm from "./components/BookingForm";
 
-// Simple shadcn-like Card replacement (so the preview works without imports)
+// Simple Card components so we don't rely on shadcn/ui imports
 const Card = ({ children, className = "" }) => (
-  <div className={`rounded-2xl shadow-lg bg-white/90 border border-gray-100 ${className}`}>{children}</div>
+  <div className={`rounded-2xl shadow-lg bg-white/90 border border-gray-100 ${className}`}>
+    {children}
+  </div>
 );
+
 const CardContent = ({ children, className = "" }) => (
   <div className={`p-6 ${className}`}>{children}</div>
 );
@@ -16,24 +28,24 @@ export default function App() {
 
   const features = [
     {
-      icon: <Clock className="w-6 h-6" />, 
-      title: "On‑demand help",
-      desc: "Book 15–60 minute micro‑sessions for exactly what you need."
+      icon: <Clock className="w-6 h-6" />,
+      title: "On-demand help",
+      desc: "Book 15–60 minute micro-sessions for exactly what you need.",
     },
     {
-      icon: <Users className="w-6 h-6" />, 
-      title: "Peer‑verified tutors",
-      desc: "Students teach what they excel at. University email gated."
+      icon: <Users className="w-6 h-6" />,
+      title: "Peer-verified tutors",
+      desc: "Students teach what they excel at. University email gated.",
     },
     {
-      icon: <CalendarCheck className="w-6 h-6" />, 
+      icon: <CalendarCheck className="w-6 h-6" />,
       title: "Smart matching",
-      desc: "Match by subject, availability, and course codes."
+      desc: "Match by subject, availability, and course codes.",
     },
     {
-      icon: <MessageSquare className="w-6 h-6" />, 
-      title: "Built‑in chat",
-      desc: "Coordinate before the session and share notes after."
+      icon: <MessageSquare className="w-6 h-6" />,
+      title: "Built-in chat",
+      desc: "Coordinate before the session and share notes after.",
     },
   ];
 
@@ -42,7 +54,7 @@ export default function App() {
       name: "Campus Beta",
       price: "Free",
       perks: [
-        "University email sign‑in",
+        "University email sign-in",
         "1:1 booking (15/30/60 min)",
         "Credits wallet",
         "Basic chat + email alerts",
@@ -73,23 +85,45 @@ export default function App() {
             <span className="font-bold text-lg">PeerLink</span>
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#features" className="hover:text-indigo-600">Features</a>
-            <a href="#how" className="hover:text-indigo-600">How it works</a>
-            <a href="#pricing" className="hover:text-indigo-600">Pricing</a>
-            <a href="#faq" className="hover:text-indigo-600">FAQ</a>
+            <a href="#features" className="hover:text-indigo-600">
+              Features
+            </a>
+            <a href="#how" className="hover:text-indigo-600">
+              How it works
+            </a>
+            <a href="#booking" className="hover:text-indigo-600">
+              Book
+            </a>
+            <a href="#pricing" className="hover:text-indigo-600">
+              Pricing
+            </a>
+            <a href="#faq" className="hover:text-indigo-600">
+              FAQ
+            </a>
           </nav>
-          <a href="#waitlist" className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium shadow hover:bg-indigo-700">Join waitlist</a>
+          <a
+            href="#booking"
+            className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium shadow hover:bg-indigo-700"
+          >
+            Book a session
+          </a>
         </div>
       </header>
 
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-10 items-center">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-            Get unstuck fast with <span className="text-indigo-600">peer micro‑tutoring</span>
+            Get unstuck fast with{" "}
+            <span className="text-indigo-600">peer micro-tutoring</span>
           </h1>
           <p className="mt-5 text-lg text-gray-600">
-            PeerLink matches you with students who have already mastered the exact topic you need—right now.
+            PeerLink matches you with students who have already mastered the
+            exact topic you need—right now.
           </p>
           <form
             id="waitlist"
@@ -113,39 +147,73 @@ export default function App() {
             </button>
           </form>
           <div className="mt-6 flex items-center gap-3 text-sm text-gray-500">
-            <Shield className="w-4 h-4" /> University‑verified accounts • Privacy‑first
+            <Shield className="w-4 h-4" /> University-verified accounts •
+            Privacy-first
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
           <Card>
             <CardContent>
               <div className="flex items-center gap-3">
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop" alt="students" className="rounded-xl w-20 h-20 object-cover" />
+                <img
+                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop"
+                  alt="students"
+                  className="rounded-xl w-20 h-20 object-cover"
+                />
                 <div>
                   <div className="font-semibold">Match found</div>
-                  <div className="text-sm text-gray-500">AVL Trees • Today 7:30 PM</div>
+                  <div className="text-sm text-gray-500">
+                    AVL Trees • Today 7:30 PM
+                  </div>
                 </div>
               </div>
               <div className="mt-6 space-y-4">
                 {[
-                  { name: "Aisha, CS Year 3", meta: "Top 5% in DSA • 4.9", stars: 5 },
+                  {
+                    name: "Aisha, CS Year 3",
+                    meta: "Top 5% in DSA • 4.9",
+                    stars: 5,
+                  },
                   { name: "Ken, Math Year 2", meta: "Probability wiz • 4.8", stars: 5 },
                 ].map((t, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 rounded-xl border bg-white">
+                  <div
+                    key={i}
+                    className="flex items-center justify-between p-4 rounded-xl border bg-white"
+                  >
                     <div>
                       <div className="font-medium">{t.name}</div>
                       <div className="text-sm text-gray-500">{t.meta}</div>
                     </div>
-                    <div className="flex items-center gap-1 text-yellow-500" aria-label={`${t.stars} stars`}>
+                    <div
+                      className="flex items-center gap-1 text-yellow-500"
+                      aria-label={`${t.stars} stars`}
+                    >
                       {Array.from({ length: 5 }).map((_, s) => (
-                        <Star key={s} className={`w-5 h-5 ${s < t.stars ? "fill-yellow-400" : "opacity-30"}`} />
+                        <Star
+                          key={s}
+                          className={`w-5 h-5 ${
+                            s < t.stars ? "fill-yellow-400" : "opacity-30"
+                          }`}
+                        />
                       ))}
                     </div>
                   </div>
                 ))}
               </div>
-              <button className="mt-6 w-full py-3 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700">Book 30‑min Session</button>
+              <button
+                className="mt-6 w-full py-3 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700"
+                onClick={() => {
+                  const el = document.getElementById("booking");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                Book 30-min Session
+              </button>
             </CardContent>
           </Card>
         </motion.div>
@@ -159,7 +227,9 @@ export default function App() {
             <Card key={idx}>
               <CardContent>
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">{f.icon}</div>
+                  <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+                    {f.icon}
+                  </div>
                   <div className="font-semibold">{f.title}</div>
                 </div>
                 <p className="mt-3 text-sm text-gray-600">{f.desc}</p>
@@ -173,43 +243,65 @@ export default function App() {
       <section id="how" className="max-w-6xl mx-auto px-4 py-16">
         <h2 className="text-3xl md:text-4xl font-bold">How it works</h2>
         <div className="mt-8 grid md:grid-cols-3 gap-6">
-          {["Create your profile", "Search & match", "Book and learn"].map((step, i) => (
-            <Card key={i}>
-              <CardContent>
-                <div className="flex items-center gap-2 text-indigo-600 font-semibold">
-                  <CheckCircle className="w-5 h-5" /> Step {i + 1}
-                </div>
-                <div className="mt-2 font-medium">{step}</div>
-                <p className="mt-2 text-sm text-gray-600">
-                  {i === 0 && "Use your university email, pick subjects you can teach or want to learn, and set availability."}
-                  {i === 1 && "We match by subject, course code, rating, and time. Message to align topics & outcomes."}
-                  {i === 2 && "Book 15/30/60 minutes. Meet via campus-supported video. Leave feedback and earn credits."}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {["Create your profile", "Search & match", "Book and learn"].map(
+            (step, i) => (
+              <Card key={i}>
+                <CardContent>
+                  <div className="flex items-center gap-2 text-indigo-600 font-semibold">
+                    <CheckCircle className="w-5 h-5" /> Step {i + 1}
+                  </div>
+                  <div className="mt-2 font-medium">{step}</div>
+                  <p className="mt-2 text-sm text-gray-600">
+                    {i === 0 &&
+                      "Use your university email, pick subjects you can teach or want to learn, and set availability."}
+                    {i === 1 &&
+                      "We match by subject, course code, rating, and time. Message to align topics & outcomes."}
+                    {i === 2 &&
+                      "Book 15/30/60 minutes. Meet via campus-supported video. Leave feedback and earn credits."}
+                  </p>
+                </CardContent>
+              </Card>
+            )
+          )}
         </div>
       </section>
 
+      {/* Booking section (form with email) */}
+      <BookingForm />
+
       {/* Pricing */}
       <section id="pricing" className="max-w-6xl mx-auto px-4 py-16">
-        <h2 className="text-3xl md:text-4xl font-bold">Simple, student‑friendly pricing</h2>
+        <h2 className="text-3xl md:text-4xl font-bold">
+          Simple, student-friendly pricing
+        </h2>
         <div className="mt-8 grid md:grid-cols-2 gap-6">
           {tiers.map((t, i) => (
-            <Card key={i} className={`${t.featured ? "ring-2 ring-indigo-600" : ""}`}>
+            <Card
+              key={i}
+              className={`${t.featured ? "ring-2 ring-indigo-600" : ""}`}
+            >
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-sm uppercase tracking-wider text-gray-500">{t.name}</div>
-                    <div className="mt-1 text-3xl font-extrabold">{t.price}</div>
+                    <div className="text-sm uppercase tracking-wider text-gray-500">
+                      {t.name}
+                    </div>
+                    <div className="mt-1 text-3xl font-extrabold">
+                      {t.price}
+                    </div>
                   </div>
                 </div>
                 <ul className="mt-6 space-y-2 text-sm">
                   {t.perks.map((p, idx) => (
-                    <li key={idx} className="flex items-start gap-2"><CheckCircle className="min-w-[20px] w-5 h-5 text-indigo-600" /> <span>{p}</span></li>
+                    <li key={idx} className="flex items-start gap-2">
+                      <CheckCircle className="min-w-[20px] w-5 h-5 text-indigo-600" />
+                      <span>{p}</span>
+                    </li>
                   ))}
                 </ul>
-                <button className="mt-6 w-full py-3 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700">{t.cta}</button>
+                <button className="mt-6 w-full py-3 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700">
+                  {t.cta}
+                </button>
               </CardContent>
             </Card>
           ))}
@@ -223,22 +315,27 @@ export default function App() {
           {[
             {
               q: "Is it only for one university?",
-              a: "We pilot per campus first for trust and safety, then expand to nearby universities with separate spaces."
+              a: "We pilot per campus first for trust and safety, then expand to nearby universities with separate spaces.",
             },
             {
               q: "How do credits work?",
-              a: "Teach to earn credits and spend them to learn. Cash sessions are optionally enabled later."
+              a: "Teach to earn credits and spend them to learn. Cash sessions are optionally enabled later.",
             },
             {
               q: "How do you verify tutors?",
-              a: "University email, transcript badges (optional), and post‑session reviews ensure quality."
+              a: "University email, transcript badges (optional), and post-session reviews ensure quality.",
             },
             {
               q: "Where do sessions happen?",
-              a: "Use campus video tools (Meet/Zoom/Teams) or in‑person on campus—your choice."
+              a: "Use campus video tools (Meet/Zoom/Teams) or in-person on campus—your choice.",
             },
           ].map((f, i) => (
-            <Card key={i}><CardContent><div className="font-semibold">{f.q}</div><p className="mt-2 text-sm text-gray-600">{f.a}</p></CardContent></Card>
+            <Card key={i}>
+              <CardContent>
+                <div className="font-semibold">{f.q}</div>
+                <p className="mt-2 text-sm text-gray-600">{f.a}</p>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </section>
@@ -246,11 +343,20 @@ export default function App() {
       {/* Footer */}
       <footer className="border-t border-gray-100">
         <div className="max-w-6xl mx-auto px-4 py-10 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2"><Zap className="w-5 h-5 text-indigo-600" /><span>PeerLink</span></div>
+          <div className="flex items-center gap-2">
+            <Zap className="w-5 h-5 text-indigo-600" />
+            <span>PeerLink</span>
+          </div>
           <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-indigo-600">Privacy</a>
-            <a href="#" className="hover:text-indigo-600">Terms</a>
-            <a href="#" className="hover:text-indigo-600">Contact</a>
+            <a href="#" className="hover:text-indigo-600">
+              Privacy
+            </a>
+            <a href="#" className="hover:text-indigo-600">
+              Terms
+            </a>
+            <a href="#" className="hover:text-indigo-600">
+              Contact
+            </a>
           </div>
           <div>© {new Date().getFullYear()} PeerLink</div>
         </div>
