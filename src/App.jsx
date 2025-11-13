@@ -1,6 +1,5 @@
-// src/App.jsx
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import {
   CheckCircle,
   Clock,
@@ -11,8 +10,8 @@ import {
   Zap,
   Shield,
 } from "lucide-react";
-import BookingForm from "./components/BookingForm";
 import TutorSearch from "./components/TutorSearch";
+import BookingForm from "./components/BookingForm";
 
 const Card = ({ children, className = "" }) => (
   <div className={`rounded-2xl shadow-lg bg-white/90 border border-gray-100 ${className}`}>
@@ -24,119 +23,64 @@ const CardContent = ({ children, className = "" }) => (
   <div className={`p-6 ${className}`}>{children}</div>
 );
 
-export default function App() {
+const features = [
+  {
+    icon: <Clock className="w-6 h-6" />,
+    title: "On-demand help",
+    desc: "Book 15–60 minute micro-sessions for exactly what you need.",
+  },
+  {
+    icon: <Users className="w-6 h-6" />,
+    title: "Peer-verified tutors",
+    desc: "Students teach what they excel at. University email gated.",
+  },
+  {
+    icon: <CalendarCheck className="w-6 h-6" />,
+    title: "Smart matching",
+    desc: "Match by subject, availability, and course codes.",
+  },
+  {
+    icon: <MessageSquare className="w-6 h-6" />,
+    title: "Built-in chat",
+    desc: "Coordinate before the session and share notes after.",
+  },
+];
+
+const tiers = [
+  {
+    name: "Campus Beta",
+    price: "Free",
+    perks: [
+      "University email sign-in",
+      "1:1 booking (15/30/60 min)",
+      "Credits wallet",
+      "Basic chat + email alerts",
+    ],
+    cta: "Join waitlist",
+  },
+  {
+    name: "Pro",
+    price: "$5 / mo",
+    perks: [
+      "Priority matching",
+      "Calendar sync",
+      "Tutor analytics",
+      "Fewer fees on cash sessions",
+    ],
+    cta: "Get notified",
+    featured: true,
+  },
+];
+
+function HomePage() {
   const [email, setEmail] = useState("");
-  const [selectedTutor, setSelectedTutor] = useState(null);
-
-  const features = [
-    {
-      icon: <Clock className="w-6 h-6" />,
-      title: "On-demand help",
-      desc: "Book 15–60 minute micro-sessions for exactly what you need.",
-    },
-    {
-      icon: <Users className="w-6 h-6" />,
-      title: "Peer-verified tutors",
-      desc: "Students teach what they excel at. University email gated.",
-    },
-    {
-      icon: <CalendarCheck className="w-6 h-6" />,
-      title: "Smart matching",
-      desc: "Match by subject, availability, and course codes.",
-    },
-    {
-      icon: <MessageSquare className="w-6 h-6" />,
-      title: "Built-in chat",
-      desc: "Coordinate before the session and share notes after.",
-    },
-  ];
-
-  const tiers = [
-    {
-      name: "Campus Beta",
-      price: "Free",
-      perks: [
-        "University email sign-in",
-        "1:1 booking (15/30/60 min)",
-        "Credits wallet",
-        "Basic chat + email alerts",
-      ],
-      cta: "Join waitlist",
-    },
-    {
-      name: "Pro",
-      price: "$5 / mo",
-      perks: [
-        "Priority matching",
-        "Calendar sync",
-        "Tutor analytics",
-        "Fewer fees on cash sessions",
-      ],
-      cta: "Get notified",
-      featured: true,
-    },
-  ];
-
-  const scrollToBooking = () => {
-    const el = document.getElementById("booking");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleSelectTutor = (tutor) => {
-    setSelectedTutor(tutor);
-    scrollToBooking();
-  };
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-white text-gray-900">
-      {/* Nav */}
-      <header className="sticky top-0 backdrop-blur bg-white/60 border-b border-gray-100 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Zap className="w-6 h-6 text-indigo-600" />
-            <span className="font-bold text-lg">PeerLink</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#features" className="hover:text-indigo-600">
-              Features
-            </a>
-            <a href="#how" className="hover:text-indigo-600">
-              How it works
-            </a>
-            <a href="#tutors" className="hover:text-indigo-600">
-              Tutors
-            </a>
-            <a href="#booking" className="hover:text-indigo-600">
-              Book
-            </a>
-            <a href="#pricing" className="hover:text-indigo-600">
-              Pricing
-            </a>
-            <a href="#faq" className="hover:text-indigo-600">
-              FAQ
-            </a>
-          </nav>
-          <button
-            onClick={() => {
-              setSelectedTutor(null);
-              scrollToBooking();
-            }}
-            className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium shadow
-                       hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
-                       transition cursor-pointer"
-          >
-            Book a session
-          </button>
-        </div>
-      </header>
-
+    <>
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-10 items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div>
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
             Get unstuck fast with{" "}
             <span className="text-indigo-600">peer micro-tutoring</span>
@@ -174,13 +118,17 @@ export default function App() {
             <Shield className="w-4 h-4" /> University-verified accounts •
             Privacy-first
           </div>
-        </motion.div>
+          <button
+            onClick={() => navigate("/tutors")}
+            className="mt-6 inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-white font-medium
+                       hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
+                       transition cursor-pointer"
+          >
+            Find a tutor & book
+          </button>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
+        <div>
           <Card>
             <CardContent>
               <div className="flex items-center gap-3">
@@ -237,16 +185,13 @@ export default function App() {
                 className="mt-6 w-full py-3 rounded-xl bg-indigo-600 text-white font-medium
                            hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
                            transition cursor-pointer"
-                onClick={() => {
-                  setSelectedTutor(null);
-                  scrollToBooking();
-                }}
+                onClick={() => navigate("/tutors")}
               >
                 Book 30-min Session
               </button>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </section>
 
       {/* Features */}
@@ -298,12 +243,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Tutors page/section */}
-      <TutorSearch onSelectTutor={handleSelectTutor} />
-
-      {/* Booking form */}
-      <BookingForm selectedTutor={selectedTutor} />
-
       {/* Pricing */}
       <section id="pricing" className="max-w-6xl mx-auto px-4 py-16">
         <h2 className="text-3xl md:text-4xl font-bold">
@@ -338,6 +277,7 @@ export default function App() {
                   className="mt-6 w-full py-3 rounded-xl bg-indigo-600 text-white font-medium
                              hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
                              transition cursor-pointer"
+                  onClick={() => navigate("/tutors")}
                 >
                   {t.cta}
                 </button>
@@ -378,9 +318,76 @@ export default function App() {
           ))}
         </div>
       </section>
+    </>
+  );
+}
+
+function TutorsPage({ selectedTutor, onSelectTutor }) {
+  return (
+    <>
+      <section className="max-w-6xl mx-auto px-4 pt-16 pb-4">
+        <h1 className="text-3xl md:text-4xl font-bold mb-2">
+          Browse tutors & book a session
+        </h1>
+        <p className="text-gray-600">
+          Choose a tutor that fits your subject and budget. Then confirm your
+          booking details below.
+        </p>
+      </section>
+      <TutorSearch onSelectTutor={onSelectTutor} />
+      <BookingForm selectedTutor={selectedTutor} />
+    </>
+  );
+}
+
+export default function App() {
+  const [selectedTutor, setSelectedTutor] = useState(null);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-white text-gray-900">
+      {/* Nav */}
+      <header className="sticky top-0 backdrop-blur bg-white/60 border-b border-gray-100 z-50">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Zap className="w-6 h-6 text-indigo-600" />
+            <span className="font-bold text-lg">PeerLink</span>
+          </div>
+          <nav className="hidden md:flex items-center gap-6 text-sm">
+            <Link to="/" className="hover:text-indigo-600">
+              Home
+            </Link>
+            <Link to="/tutors" className="hover:text-indigo-600">
+              Tutors & Booking
+            </Link>
+          </nav>
+          <Link
+            to="/tutors"
+            onClick={() => setSelectedTutor(null)}
+            className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium shadow
+                       hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
+                       transition cursor-pointer"
+          >
+            Book a session
+          </Link>
+        </div>
+      </header>
+
+      {/* Routes */}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/tutors"
+          element={
+            <TutorsPage
+              selectedTutor={selectedTutor}
+              onSelectTutor={setSelectedTutor}
+            />
+          }
+        />
+      </Routes>
 
       {/* Footer */}
-      <footer className="border-t border-gray-100">
+      <footer className="border-t border-gray-100 mt-10">
         <div className="max-w-6xl mx-auto px-4 py-10 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-indigo-600" />

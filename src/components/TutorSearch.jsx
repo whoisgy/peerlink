@@ -1,13 +1,13 @@
-// src/components/TutorSearch.jsx
 import { useMemo, useState } from "react";
 import { Search, Filter, Star, DollarSign, User } from "lucide-react";
 
+// 10 placeholder tutors
 const tutorsData = [
   {
     id: 1,
     name: "Aisha Ali",
     subject: "Data Structures & Algorithms",
-    price: 25, // price per 30 minutes (RM, etc.)
+    price: 25,
     rating: 4.9,
     uniYear: "CS Year 3",
     bio: "Top 5% in DSA, loves explaining trees and graphs.",
@@ -30,6 +30,69 @@ const tutorsData = [
     uniYear: "CS Year 1",
     bio: "Great with beginners and gentle pace teaching.",
   },
+  {
+    id: 4,
+    name: "David Tan",
+    subject: "Operating Systems",
+    price: 28,
+    rating: 4.9,
+    uniYear: "CS Year 4",
+    bio: "Enjoys explaining processes, threads, and scheduling.",
+  },
+  {
+    id: 5,
+    name: "Nur Iman",
+    subject: "Discrete Mathematics",
+    price: 22,
+    rating: 4.8,
+    uniYear: "CS Year 2",
+    bio: "Specialises in logic, sets, and proofs.",
+  },
+  {
+    id: 6,
+    name: "Jason Lee",
+    subject: "Linear Algebra",
+    price: 21,
+    rating: 4.7,
+    uniYear: "Math Year 2",
+    bio: "Explains vectors and matrices with real-world examples.",
+  },
+  {
+    id: 7,
+    name: "Priya Kumar",
+    subject: "Database Systems",
+    price: 23,
+    rating: 4.8,
+    uniYear: "CS Year 3",
+    bio: "Loves designing ERDs and SQL query optimisation.",
+  },
+  {
+    id: 8,
+    name: "Luqman Hakim",
+    subject: "Computer Networks",
+    price: 24,
+    rating: 4.6,
+    uniYear: "CS Year 3",
+    bio: "Helps students visualise how packets move through the internet.",
+  },
+  {
+    id: 9,
+    name: "Emily Chong",
+    subject: "Front-end Web Development",
+    price: 19,
+    rating: 4.7,
+    uniYear: "IT Year 2",
+    bio: "Focuses on HTML, CSS, and React basics.",
+  },
+  {
+    id: 10,
+    name: "Hafiz Rahman",
+    subject: "Java OOP",
+    price: 23,
+    rating: 4.8,
+    uniYear: "CS Year 3",
+    bio: "Explains classes, inheritance, and interfaces clearly.",
+  },
 ];
 
 export default function TutorSearch({ onSelectTutor }) {
@@ -45,10 +108,9 @@ export default function TutorSearch({ onSelectTutor }) {
   );
 
   const filteredTutors = tutorsData.filter((t) => {
-    const subjectOk =
-      !filters.subject || t.subject === filters.subject;
+    const subjectOk = !filters.subject || t.subject === filters.subject;
     const priceOk =
-      !filters.maxPrice || t.price <= Number(filters.maxPrice);
+      !filters.maxPrice || t.price <= Number(filters.maxPrice || 0);
     const nameOk =
       !filters.tutorName ||
       t.name.toLowerCase().includes(filters.tutorName.toLowerCase());
@@ -61,7 +123,7 @@ export default function TutorSearch({ onSelectTutor }) {
   }
 
   return (
-    <section id="tutors" className="max-w-6xl mx-auto px-4 py-16">
+    <section className="max-w-6xl mx-auto px-4 py-16">
       <div className="flex items-center gap-2 mb-4">
         <Search className="w-6 h-6 text-indigo-600" />
         <h2 className="text-3xl font-bold">Find a tutor</h2>
@@ -125,7 +187,9 @@ export default function TutorSearch({ onSelectTutor }) {
         {filteredTutors.map((t) => (
           <div
             key={t.id}
-            className="rounded-2xl border bg-white/90 p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition cursor-pointer"
+            className="rounded-2xl border bg-white/90 p-5 shadow-sm
+                       hover:shadow-xl hover:-translate-y-1 transition
+                       cursor-pointer"
           >
             <div className="flex items-center justify-between mb-2">
               <div className="font-semibold text-lg">{t.name}</div>
