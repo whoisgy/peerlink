@@ -1,20 +1,11 @@
 import { useMemo, useState } from "react";
 import { Search, Filter, Star, DollarSign, User } from "lucide-react";
-
-const tutorsData = [
-  { id: 1, name: "Aisha Ali", subject: "Data Structures & Algorithms", price: 25, rating: 4.9, uniYear: "CS Year 3", bio: "Top 5% in DSA, loves trees & graphs." },
-  { id: 2, name: "Ken Wong", subject: "Probability & Statistics", price: 20, rating: 4.8, uniYear: "Math Year 2", bio: "Makes probability simple." },
-  { id: 3, name: "Sara Lim", subject: "Python Programming", price: 18, rating: 4.7, uniYear: "CS Year 1", bio: "Beginner-friendly teacher." },
-  { id: 4, name: "David Tan", subject: "Operating Systems", price: 28, rating: 4.9, uniYear: "CS Year 4", bio: "Threads, processes & scheduling expert." },
-  { id: 5, name: "Nur Iman", subject: "Discrete Math", price: 22, rating: 4.8, uniYear: "CS Year 2", bio: "Logic & proofs made easy." },
-  { id: 6, name: "Jason Lee", subject: "Linear Algebra", price: 21, rating: 4.7, uniYear: "Math Year 2", bio: "Vectors & matrices explained visually." },
-  { id: 7, name: "Priya Kumar", subject: "Database Systems", price: 23, rating: 4.8, uniYear: "CS Year 3", bio: "SQL + ERDs specialist." },
-  { id: 8, name: "Luqman Hakim", subject: "Computer Networks", price: 24, rating: 4.6, uniYear: "CS Year 3", bio: "Explains the internet from scratch." },
-  { id: 9, name: "Emily Chong", subject: "Front-end Development", price: 19, rating: 4.7, uniYear: "IT Year 2", bio: "HTML, CSS & React basics." },
-  { id: 10, name: "Hafiz Rahman", subject: "Java OOP", price: 23, rating: 4.8, uniYear: "CS Year 3", bio: "OOP concepts explained clearly." },
-];
+import { useNavigate } from "react-router-dom";
+import { tutors } from "../data/tutors"; // ← Import the shared tutor list
 
 export default function TutorSearch({ onSelectTutor }) {
+  const navigate = useNavigate();
+
   const [filters, setFilters] = useState({
     subject: "",
     maxPrice: "",
@@ -22,11 +13,11 @@ export default function TutorSearch({ onSelectTutor }) {
   });
 
   const subjects = useMemo(
-    () => [...new Set(tutorsData.map((t) => t.subject))],
+    () => [...new Set(tutors.map((t) => t.subject))],
     []
   );
 
-  const filtered = tutorsData.filter((t) => {
+  const filtered = tutors.filter((t) => {
     const s = !filters.subject || t.subject === filters.subject;
     const p = !filters.maxPrice || t.price <= Number(filters.maxPrice);
     const n =
@@ -41,7 +32,7 @@ export default function TutorSearch({ onSelectTutor }) {
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-16">
-      {/* Filters */}
+      {/* ---------------- FILTERS ---------------- */}
       <div className="grid md:grid-cols-3 gap-4 mb-10">
         <div>
           <label className="text-sm font-medium flex items-center gap-1">
@@ -85,27 +76,61 @@ export default function TutorSearch({ onSelectTutor }) {
         </div>
       </div>
 
-      {/* Tutor Cards */}
+      {/* ---------------- TUTOR CARDS ---------------- */}
       <div className="grid md:grid-cols-3 gap-6">
         {filtered.map((t) => (
           <div
             key={t.id}
             className="p-5 border rounded-2xl bg-white shadow-sm hover:shadow-xl 
                        hover:-translate-y-1 transition cursor-pointer"
+            onClick={() => navigate(`/tutors/${t.id}`)} // Card click → profile
           >
+            {/* Tutor Image */}
+            <img
+              src={t.photo}
+              alt={t.name}
+              className="w-full h-40 object-cover rounded-xl mb-4"
+            />
+
+            {/* Tutor Basic Info */}
             <div className="font-bold text-lg">{t.name}</div>
             <div className="text-sm text-gray-500">{t.uniYear}</div>
             <div className="mt-1 text-indigo-600 font-medium">{t.subject}</div>
             <p className="mt-2 text-gray-600 text-sm">{t.bio}</p>
 
-            <div className="mt-4 flex items-center justify-between">
-              <div className="font-semibold">
-                RM {t.price} <span className="text-gray-500 text-sm">/30 min</span>
-              </div>
+            {/* Ratings */}
+            <div className="flex items-center gap-1 mt-3">
+              <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+              <span className="text-gray-700 font-semibold">{t.rating}</span>
+            </div>
 
+            {/* Price */}
+            <div className="mt-2 text-gray-700 font-medium">
+              RM {t.price} <span className="text-sm text-gray-500">/30 min</span>
+            </div>
+
+            {/* ---------------- Buttons ---------------- */}
+            <div className="mt-4 flex items-center justify-between gap-3">
+
+              {/* View Profile */}
               <button
-                onClick={() => onSelectTutor(t)}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm font-medium
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent card click
+                  navigate(`/tutors/${t.id}`);
+                }}
+                className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-xl text-sm font-medium
+                           hover:bg-gray-300 hover:shadow transition cursor-pointer"
+              >
+                View Profile
+              </button>
+
+              {/* Book Now Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent card click
+                  onSelectTutor(t);
+                }}
+                className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm font-medium
                            hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5
                            transition cursor-pointer"
               >
@@ -114,6 +139,12 @@ export default function TutorSearch({ onSelectTutor }) {
             </div>
           </div>
         ))}
+
+        {filtered.length === 0 && (
+          <p className="col-span-3 text-center text-gray-500 text-sm">
+            No tutors match your filters.
+          </p>
+        )}
       </div>
     </section>
   );

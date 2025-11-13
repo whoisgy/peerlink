@@ -3,12 +3,14 @@ import { Routes, Route, Link, useNavigate, useLocation } from "react-router-dom"
 import TutorSearch from "./components/TutorSearch";
 import BookingForm from "./components/BookingForm";
 import BookingModal from "./components/BookingModal";
+import TutorProfile from "./pages/TutorProfile";
 import {
   Zap,
   Star,
   Menu,
   X,
 } from "lucide-react";
+
 
 /* ---------------- NAVBAR LINK COMPONENT ---------------- */
 function NavbarLink({ to, text, activePath }) {
@@ -237,6 +239,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/tutors" element={<TutorsPage onSelectTutor={handleSelectTutor} />} />
+        <Route path="/tutors/:id" element={<TutorProfile onBook={handleSelectTutor} />} />
       </Routes>
 
       {/* ---------------- BOOKING MODAL ---------------- */}
