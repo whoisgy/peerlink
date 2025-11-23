@@ -95,7 +95,7 @@ function HomePage() {
         "Credits wallet",
         "Basic chat + email alerts",
       ],
-      cta: "Join as tutor/student",
+      cta: "Join waitlist",
     },
     {
       name: "Pro",
@@ -147,7 +147,7 @@ function HomePage() {
                          hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-0.5
                          transition cursor-pointer"
             >
-              Join waitlist
+              Join as tutor/student
             </button>
           </form>
 
