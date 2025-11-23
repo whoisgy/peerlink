@@ -95,7 +95,7 @@ function HomePage() {
         "Credits wallet",
         "Basic chat + email alerts",
       ],
-      cta: "Join waitlist",
+      cta: "Join as tutor/student",
     },
     {
       name: "Pro",
