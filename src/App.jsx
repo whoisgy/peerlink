@@ -101,10 +101,10 @@ function HomePage() {
       name: "Pro",
       price: "$5 / mo",
       perks: [
-        "Priority matching",
-        "Calendar sync",
+        "Unlimited session recordings",
+        "Monthly Session credits",
+        "Priority tutor booking",
         "Tutor analytics",
-        "Fewer fees on cash sessions",
       ],
       cta: "Get notified",
       featured: true,
@@ -317,7 +317,7 @@ function HomePage() {
           {[
             {
               q: "Is it only for one university?",
-              a: "We pilot per campus first for trust and safety, then expand to nearby universities with separate spaces.",
+              a: "We pilot per campus first for trust and safety, currently we are only opening access for students from Sunway University, Taylors University and Monash Uniersity.",
             },
             {
               q: "How do credits work?",
@@ -329,7 +329,7 @@ function HomePage() {
             },
             {
               q: "Where do sessions happen?",
-              a: "Use campus video tools (Meet/Zoom/Teams) or in-person on campus—your choice.",
+              a: "Sessions will be held on our app/website.",
             },
           ].map((f, i) => (
             <Card key={i}>
