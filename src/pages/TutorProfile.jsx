@@ -14,6 +14,8 @@ export default function TutorProfile({ onBook }) {
     );
   }
 
+  const hasReviews = tutor.reviews && tutor.reviews.length > 0;
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
       {/* Header Section */}
@@ -30,6 +32,12 @@ export default function TutorProfile({ onBook }) {
           <div className="flex items-center gap-2 mt-3">
             <Star className="w-6 h-6 text-yellow-500 fill-yellow-500" />
             <span className="text-lg font-semibold">{tutor.rating}</span>
+            {hasReviews && (
+              <span className="text-sm text-gray-500">
+                • {tutor.reviews.length} review
+                {tutor.reviews.length > 1 ? "s" : ""}
+              </span>
+            )}
           </div>
 
           <div className="mt-3 text-indigo-600 font-semibold text-lg">
@@ -51,10 +59,59 @@ export default function TutorProfile({ onBook }) {
         </div>
       </div>
 
-      {/* Long Bio Section */}
+      {/* Long Bio */}
       <div className="mt-10 text-gray-700 text-lg leading-relaxed">
         {tutor.longBio}
       </div>
+
+      {/* Reviews Section */}
+      {hasReviews && (
+        <section className="mt-10">
+          <h2 className="text-2xl font-bold mb-4">Reviews</h2>
+          <div className="space-y-4">
+            {tutor.reviews.map((r) => (
+              <div
+                key={r.id}
+                className="border rounded-2xl bg-white p-4 shadow-sm"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <div className="font-semibold text-gray-800">
+                    {r.student}
+                  </div>
+                  <div className="flex items-center gap-1 text-yellow-500">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-4 h-4 ${
+                          i < r.rating ? "fill-yellow-500" : "opacity-30"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                {r.course && (
+                  <div className="text-xs text-indigo-600 mb-1">
+                    {r.course}
+                  </div>
+                )}
+                <p className="text-sm text-gray-700">{r.comment}</p>
+                {r.date && (
+                  <div className="mt-2 text-xs text-gray-500">{r.date}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {!hasReviews && (
+        <section className="mt-10">
+          <h2 className="text-2xl font-bold mb-2">Reviews</h2>
+          <p className="text-gray-500 text-sm">
+            No reviews yet. Be the first to book a session and leave feedback.
+          </p>
+        </section>
+      )}
     </div>
   );
 }
