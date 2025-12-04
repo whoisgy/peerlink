@@ -10,6 +10,7 @@ import TutorSearch from "./components/TutorSearch";
 import BookingForm from "./components/BookingForm";
 import BookingModal from "./components/BookingModal";
 import TutorProfile from "./pages/TutorProfile";
+import ChatModal from "./components/ChatModal";
 
 import {
   Zap,
@@ -66,7 +67,7 @@ function HomePage() {
     {
       icon: <Clock className="w-6 h-6" />,
       title: "On-demand help",
-      desc: "Book 15–60 minute micro-sessions for exactly what you need.",
+      desc: "Get unstuck fast with short, focused sessions for exactly what you need.",
     },
     {
       icon: <Users className="w-6 h-6" />,
@@ -80,8 +81,8 @@ function HomePage() {
     },
     {
       icon: <MessageSquare className="w-6 h-6" />,
-      title: "Built-in chat",
-      desc: "Coordinate before the session and share notes after.",
+      title: "Built-in chat first",
+      desc: "Chat before booking to align topics, expectations, and timing.",
     },
   ];
 
@@ -91,9 +92,9 @@ function HomePage() {
       price: "Free",
       perks: [
         "University email sign-in",
-        "1:1 booking (15/30/60 min)",
-        "Credits wallet",
-        "Basic chat + email alerts",
+        "Chat with tutors",
+        "Credits wallet (coming soon)",
+        "Basic notifications",
       ],
       cta: "Join waitlist",
     },
@@ -101,10 +102,10 @@ function HomePage() {
       name: "Pro",
       price: "$5 / mo",
       perks: [
-        "Unlimited session recordings",
-        "Monthly Session credits",
-        "Priority tutor booking",
-        "Tutor analytics",
+        "Priority tutor visibility",
+        "Calendar sync",
+        "Session analytics",
+        "Lower platform fees",
       ],
       cta: "Get notified",
       featured: true,
@@ -121,8 +122,7 @@ function HomePage() {
             <span className="text-indigo-600">peer micro-tutoring</span>
           </h1>
           <p className="mt-4 text-gray-600 text-lg">
-            PeerLink matches you with students who mastered the topic you
-            need—right now.
+            PeerLink connects you with students who&apos;ve already mastered the topic you&apos;re stuck on — starting with a chat, not a booking form.
           </p>
 
           <form
@@ -162,7 +162,7 @@ function HomePage() {
                        hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-0.5
                        transition cursor-pointer"
           >
-            Find tutors
+            Browse tutors
           </button>
         </div>
 
@@ -176,7 +176,7 @@ function HomePage() {
                   className="w-20 h-20 rounded-xl object-cover"
                 />
                 <div>
-                  <div className="font-semibold">Match found</div>
+                  <div className="font-semibold">New match available</div>
                   <div className="text-gray-500 text-sm">
                     AVL Trees • Tonight 7:30 PM
                   </div>
@@ -207,7 +207,7 @@ function HomePage() {
                            hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-0.5
                            transition cursor-pointer"
               >
-                Book Session
+                Start chatting with tutors
               </button>
             </CardContent>
           </Card>
@@ -215,10 +215,7 @@ function HomePage() {
       </section>
 
       {/* Features */}
-      <section
-        id="features"
-        className="max-w-6xl mx-auto px-4 py-10"
-      >
+      <section id="features" className="max-w-6xl mx-auto px-4 py-10">
         <h2 className="text-3xl md:text-4xl font-bold">
           Why students love PeerLink
         </h2>
@@ -243,7 +240,7 @@ function HomePage() {
       <section id="how" className="max-w-6xl mx-auto px-4 py-16">
         <h2 className="text-3xl md:text-4xl font-bold">How it works</h2>
         <div className="mt-8 grid md:grid-cols-3 gap-6">
-          {["Create your profile", "Search & match", "Book and learn"].map(
+          {["Create your profile", "Chat & align", "Book and learn"].map(
             (step, i) => (
               <Card key={i}>
                 <CardContent>
@@ -253,11 +250,11 @@ function HomePage() {
                   <div className="mt-2 font-medium">{step}</div>
                   <p className="mt-2 text-sm text-gray-600">
                     {i === 0 &&
-                      "Use your university email, pick subjects you can teach or want to learn, and set availability."}
+                      "Use your university email, pick subjects you can teach or want to learn, and set your study level."}
                     {i === 1 &&
-                      "We match by subject, course code, rating, and time. Message to align topics & outcomes."}
+                      "Message tutors to clarify topics, level of depth, and timing before committing to a session."}
                     {i === 2 &&
-                      "Book 15/30/60 minutes. Meet via campus-supported video. Leave feedback and earn credits."}
+                      "Once both sides agree, arrange a session slot and confirm via the booking flow."}
                   </p>
                 </CardContent>
               </Card>
@@ -317,19 +314,19 @@ function HomePage() {
           {[
             {
               q: "Is it only for one university?",
-              a: "We pilot per campus first for trust and safety, currently we are only opening access for students from Sunway University, Taylors University and Monash Uniersity.",
+              a: "We pilot per campus first for trust and safety. Currently we only open access for Sunway, Taylor's, and Monash (Malaysia) students.",
             },
             {
-              q: "How do credits work?",
-              a: "Teach to earn credits and spend them to learn. Cash sessions are optionally enabled later.",
+              q: "Do I have to pay to chat?",
+              a: "No. Chatting is free. You only confirm a session when you both agree.",
             },
             {
               q: "How do you verify tutors?",
-              a: "University email, transcript badges (optional), and post-session reviews ensure quality.",
+              a: "University email, optional transcript badges, and post-session reviews ensure quality.",
             },
             {
               q: "Where do sessions happen?",
-              a: "Sessions will be held on our app/website.",
+              a: "Online using your preferred tools for now (Meet/Zoom/etc.). Later, we’ll integrate built-in video.",
             },
           ].map((f, i) => (
             <Card key={i}>
@@ -346,16 +343,16 @@ function HomePage() {
 }
 
 /* ---------- Tutors page (list + filters) ---------- */
-function TutorsPage({ onSelectTutor }) {
+function TutorsPage({ onChat }) {
   return (
     <>
       <section className="max-w-6xl mx-auto px-4 pt-16 pb-4">
-        <h1 className="text-3xl font-bold">Browse tutors & book a session</h1>
+        <h1 className="text-3xl font-bold">Browse tutors & start chatting</h1>
         <p className="text-gray-600 mt-2">
-          Choose your tutor, set your time, and confirm your session.
+          Filter by subject, price, and name. Chat first, then arrange a session together.
         </p>
       </section>
-      <TutorSearch onSelectTutor={onSelectTutor} />
+      <TutorSearch onChat={onChat} />
     </>
   );
 }
@@ -367,6 +364,9 @@ export default function App() {
   const [selectedTutor, setSelectedTutor] = useState(null);
   const [bookingOpen, setBookingOpen] = useState(false);
 
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatTutor, setChatTutor] = useState(null);
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [navShadow, setNavShadow] = useState(false);
 
@@ -376,8 +376,14 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  function handleSelectTutor(tutor) {
-    setSelectedTutor(tutor);
+  function handleChat(tutor) {
+    setChatTutor(tutor);
+    setChatOpen(true);
+  }
+
+  function handleRequestBookingFromChat() {
+    setChatOpen(false);
+    setSelectedTutor(chatTutor);
     setBookingOpen(true);
   }
 
@@ -404,7 +410,11 @@ export default function App() {
             <NavbarLink
               to="/tutors"
               text="Tutors"
-              activePath={location.pathname.startsWith("/tutors") ? "/tutors" : location.pathname}
+              activePath={
+                location.pathname.startsWith("/tutors")
+                  ? "/tutors"
+                  : location.pathname
+              }
             />
           </nav>
 
@@ -414,7 +424,7 @@ export default function App() {
             className="hidden md:inline-block px-5 py-2 rounded-xl bg-indigo-600 text-white text-lg font-semibold shadow
                        hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-0.5 transition cursor-pointer"
           >
-            Book
+            Browse tutors
           </Link>
 
           {/* Mobile menu button */}
@@ -471,7 +481,7 @@ export default function App() {
                 className="mt-4 px-5 py-3 bg-indigo-600 text-white rounded-xl text-center font-semibold
                            hover:bg-indigo-700 transition"
               >
-                Book Session
+                Browse tutors
               </Link>
             </div>
           </div>
@@ -483,15 +493,23 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route
           path="/tutors"
-          element={<TutorsPage onSelectTutor={handleSelectTutor} />}
+          element={<TutorsPage onChat={handleChat} />}
         />
         <Route
           path="/tutors/:id"
-          element={<TutorProfile onBook={handleSelectTutor} />}
+          element={<TutorProfile onChat={handleChat} />}
         />
       </Routes>
 
-      {/* Booking modal */}
+      {/* Chat modal */}
+      <ChatModal
+        open={chatOpen}
+        tutor={chatTutor}
+        onClose={() => setChatOpen(false)}
+        onRequestBooking={handleRequestBookingFromChat}
+      />
+
+      {/* Booking modal (only after chat chooses Arrange Session) */}
       <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)}>
         <BookingForm
           selectedTutor={selectedTutor}

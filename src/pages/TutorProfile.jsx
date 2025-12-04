@@ -1,8 +1,9 @@
+import React from "react";
 import { useParams } from "react-router-dom";
 import { tutors } from "../data/tutors";
-import { Star } from "lucide-react";
+import { Star, MessageCircle } from "lucide-react";
 
-export default function TutorProfile({ onBook }) {
+export default function TutorProfile({ onChat }) {
   const { id } = useParams();
   const tutor = tutors.find((t) => t.id === Number(id));
 
@@ -18,10 +19,11 @@ export default function TutorProfile({ onBook }) {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
-      {/* Header Section */}
+      {/* Header */}
       <div className="flex flex-col md:flex-row gap-8 items-center">
         <img
           src={tutor.photo}
+          alt={tutor.name}
           className="w-40 h-40 rounded-2xl object-cover shadow-lg"
         />
 
@@ -45,16 +47,18 @@ export default function TutorProfile({ onBook }) {
           </div>
 
           <div className="text-gray-700 mt-2">
-            RM {tutor.price} <span className="text-sm">/ 30 mins</span>
+            RM {tutor.price}{" "}
+            <span className="text-sm text-gray-500">/ 30 mins</span>
           </div>
 
           <button
-            onClick={() => onBook(tutor)}
+            onClick={() => onChat && onChat(tutor)}
             className="mt-4 px-5 py-3 rounded-xl bg-indigo-600 text-white font-medium shadow
                        hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-0.5
-                       transition cursor-pointer"
+                       transition cursor-pointer inline-flex items-center gap-2"
           >
-            Book a session
+            <MessageCircle className="w-5 h-5" />
+            Chat with Tutor
           </button>
         </div>
       </div>
@@ -65,7 +69,7 @@ export default function TutorProfile({ onBook }) {
       </div>
 
       {/* Reviews Section */}
-      {hasReviews && (
+      {hasReviews ? (
         <section className="mt-10">
           <h2 className="text-2xl font-bold mb-4">Reviews</h2>
           <div className="space-y-4">
@@ -102,13 +106,11 @@ export default function TutorProfile({ onBook }) {
             ))}
           </div>
         </section>
-      )}
-
-      {!hasReviews && (
+      ) : (
         <section className="mt-10">
           <h2 className="text-2xl font-bold mb-2">Reviews</h2>
           <p className="text-gray-500 text-sm">
-            No reviews yet. Be the first to book a session and leave feedback.
+            No reviews yet. Be the first to chat and arrange a session.
           </p>
         </section>
       )}
